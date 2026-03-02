@@ -11,7 +11,7 @@
     <meta name="keywords" content="resume builder, AI resume, ATS resume, cover letter, job application, CV builder, resume template, applicant tracking system, fast resume" />
     <meta name="author" content="Fast Resume" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://FastResume.work/" />
+    <link rel="canonical" href="https://fastresume.work/" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -22,8 +22,8 @@
     <meta property="og:site_name" content="Fast Resume" />
     <meta property="og:title" content="Fast Resume — Resume done before your coffee cools." />
     <meta property="og:description" content="Build an ATS-friendly resume with AI. Step-by-step guidance, instant edits, one-click PDF/DOCX export. ☕️ Resume done before your coffee cools." />
-    <meta property="og:url" content="https://FastResume.work/" />
-    <meta property="og:image" content="https://FastResume.work/og-image.png" />
+    <meta property="og:url" content="https://fastresume.work/" />
+    <meta property="og:image" content="https://fastresume.work/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="en_US" />
@@ -32,7 +32,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Fast Resume — Resume done before your coffee cools." />
     <meta name="twitter:description" content="Build an ATS-friendly resume with AI. Step-by-step guidance, instant edits, one-click PDF/DOCX export. ☕️ Resume done before your coffee cools." />
-    <meta name="twitter:image" content="https://FastResume.work/og-image.png" />
+    <meta name="twitter:image" content="https://fastresume.work/og-image.png" />
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NZYJ701NM9"></script>
@@ -43,10 +43,11 @@
       gtag('config', 'G-NZYJ701NM9');
     </script>
 
-    <!-- Preconnect for fonts -->
+    <!-- Preconnect for fonts; load async to avoid blocking FCP/LCP -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
 
     <!-- JSON-LD structured data -->
     <script type="application/ld+json">
@@ -55,7 +56,7 @@
       "@type": "WebApplication",
       "name": "Fast Resume",
       "description": "Build an ATS-friendly resume with AI. Step-by-step guidance, instant edits, PDF/DOCX export, and AI-generated cover letters. Resume done before your coffee cools.",
-      "url": "https://FastResume.work/",
+      "url": "https://fastresume.work/",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Any",
       "offers": {
@@ -67,7 +68,17 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static shell for instant FCP/LCP; replaced by React when app loads -->
+      <div style="display:grid;grid-template-columns:40% 60%;height:100vh;max-height:100vh;overflow:hidden;background:#fafafa;margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+        <aside style="background:#fff;border-right:1px solid #e5e5e5;display:flex;flex-direction:column;min-height:0;padding:1.25rem 1.5rem;">
+          <h1 style="margin:0;font-size:1.5rem;font-weight:700;color:#171717;">Fast Resume</h1>
+          <p style="margin:0.25rem 0 1rem;font-size:0.875rem;color:#737373;">☕️ Resume done before your coffee cools.</p>
+          <p style="margin:0;font-size:0.875rem;color:#737373;">Loading…</p>
+        </aside>
+        <main style="background:#fafafa;min-width:0;"></main>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

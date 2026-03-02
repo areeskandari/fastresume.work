@@ -11,9 +11,12 @@ async function apiFetch(url: string, options: RequestInit) {
     return res
   } catch (e) {
     if (e instanceof TypeError && e.message === 'Failed to fetch') {
+      const base = import.meta.env.VITE_API_URL ?? ''
       const msg = import.meta.env.DEV
         ? 'Cannot reach server. Run "npm run dev:full" so the API runs on port 3001.'
-        : 'Cannot reach server. Please check your connection or try again later.'
+        : base
+          ? 'Cannot reach server. Please check your connection or try again later.'
+          : 'API not reachable. In production, set VITE_API_URL to your backend URL (e.g. https://api.yourdomain.com) at build time.'
       throw new Error(msg)
     }
     throw e
