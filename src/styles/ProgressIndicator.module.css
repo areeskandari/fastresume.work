@@ -1,0 +1,46 @@
+.wrapper {
+  margin-top: 0.75rem;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--col-text-muted);
+}
+
+.item.done {
+  color: var(--col-progress-done);
+}
+
+.item.active {
+  color: var(--col-progress-active);
+  font-weight: 600;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.item.active .dot {
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--col-progress-active);
+}
+
+.label {
+  text-transform: capitalize;
+}

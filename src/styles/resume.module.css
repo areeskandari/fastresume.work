@@ -1,0 +1,149 @@
+/* ATS-safe: single column, no tables, no icons, black & white */
+
+.header {
+  margin-bottom: 0.5rem;
+}
+
+.name {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #000;
+}
+
+.nameEdit {
+  display: inline-block;
+}
+
+.contact {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #333;
+}
+
+.contactLink {
+  color: #333;
+  text-decoration: underline;
+}
+
+.contactLink:hover {
+  color: #000;
+}
+
+.section {
+  margin-top: 1.25rem;
+}
+
+.sectionTitle {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #000;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.25rem;
+}
+
+.summary {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.block {
+  margin-top: 0.75rem;
+}
+
+.block:first-of-type {
+  margin-top: 0.25rem;
+}
+
+.blockHeader {
+  font-size: 0.9375rem;
+}
+
+.company {
+  font-weight: 600;
+  color: #000;
+}
+
+.role {
+  color: #333;
+}
+
+.dateRange {
+  margin: 0.15rem 0 0;
+  font-size: 0.8125rem;
+  color: #555;
+}
+
+.datePart {
+  display: inline;
+}
+
+.bulletList {
+  margin: 0.35rem 0 0;
+  padding-left: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: #333;
+}
+
+.projectDesc {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.skillsBlock {
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.skillsBlock p {
+  margin: 0.25rem 0 0;
+}
+
+.skillsBlock p:first-child {
+  margin-top: 0;
+}
+
+/* Inline editable fields: hover shows edit cue, click to edit */
+.editableSpan {
+  cursor: text;
+  border-radius: 2px;
+  padding: 1px 3px;
+  margin: -1px -3px;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+.editableSpan:hover {
+  background: rgba(59, 130, 246, 0.08);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.25);
+}
+.editablePlaceholder {
+  color: #888;
+}
+.editableInput,
+.editableTextarea {
+  width: 100%;
+  margin: 0;
+  padding: 2px 4px;
+  font: inherit;
+  color: inherit;
+  background: #f8fafc;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 3px;
+  outline: none;
+}
+.editableInput:focus,
+.editableTextarea:focus {
+  border-color: var(--col-accent, #2563eb);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+.editableTextarea {
+  resize: vertical;
+  min-height: 4em;
+}
