@@ -35,10 +35,11 @@ export function getNextQuestion(state: OrchestratorState): string | null {
 export function getNextQuestionWithHint(state: OrchestratorState): {
   question: string
   hint?: string
+  options?: string[]
 } | null {
   const step = getNextStep(state.sectionId, state.stepIndex)
   if (!step) return null
-  return { question: step.question, hint: step.hint }
+  return { question: step.question, hint: step.hint, options: step.options }
 }
 
 export function advanceState(
@@ -71,11 +72,11 @@ export function advanceState(
     }
   }
 
-  // "are you still working here?"
+  // "are you still working here?" — if yes, skip end month/year and go to bullets
   if (field === 'isCurrent') {
     if (normalized === 'yes' || normalized === 'y' || normalized === 'current')
-      return { ...state, stepIndex: state.stepIndex + 1 }
-    return { ...state, stepIndex: state.stepIndex + 1 }
+      return { ...state, stepIndex: state.stepIndex + 3 } // skip endMonth, endYear
+    return { ...state, stepIndex: state.stepIndex + 1 } // no → ask end month
   }
 
   const nextStepIndex = state.stepIndex + 1

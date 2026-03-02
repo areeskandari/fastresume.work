@@ -25,6 +25,27 @@
   box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.15);
 }
 
+.skipButton {
+  flex-shrink: 0;
+  padding: 0.65rem 1rem;
+  font-weight: 500;
+  color: var(--col-text-muted, #666);
+  background: transparent;
+  border: 1px solid var(--col-border);
+  border-radius: var(--radius);
+}
+
+.skipButton:hover:not(:disabled) {
+  color: var(--col-text);
+  border-color: var(--col-text-muted, #999);
+  background: var(--col-bg);
+}
+
+.skipButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .sendButton {
   flex-shrink: 0;
   padding: 0.65rem 1.25rem;

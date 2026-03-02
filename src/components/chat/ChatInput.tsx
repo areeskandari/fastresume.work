@@ -3,12 +3,14 @@ import styles from '../../styles/ChatInput.module.css'
 
 interface ChatInputProps {
   onSend: (value: string) => void
+  onSkip?: () => void
+  showSkip?: boolean
   disabled?: boolean
   placeholder?: string
 }
 
 export const ChatInput = forwardRef<HTMLTextAreaElement | null, ChatInputProps>(function ChatInput(
-  { onSend, disabled, placeholder = 'Type your answer...' },
+  { onSend, onSkip, showSkip, disabled, placeholder = 'Type your answer...' },
   ref
 ) {
   const [value, setValue] = useState('')
@@ -59,6 +61,17 @@ export const ChatInput = forwardRef<HTMLTextAreaElement | null, ChatInputProps>(
         rows={1}
         aria-label="Chat input"
       />
+      {showSkip && onSkip && (
+        <button
+          type="button"
+          className={styles.skipButton}
+          onClick={onSkip}
+          disabled={disabled}
+          aria-label="Skip this question"
+        >
+          Skip
+        </button>
+      )}
       <button
         type="button"
         className={styles.sendButton}

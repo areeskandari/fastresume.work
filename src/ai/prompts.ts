@@ -13,6 +13,8 @@ interface SectionStep {
   question: string
   field?: string
   hint?: string
+  /** Suggestion buttons for fast input (e.g. Yes/No) */
+  options?: string[]
 }
 
 export const SECTION_PROMPTS: Record<ResumeSectionId, SectionStep[]> = {
@@ -39,7 +41,7 @@ export const SECTION_PROMPTS: Record<ResumeSectionId, SectionStep[]> = {
     { question: 'What was your job title?', field: 'role' },
     { question: 'Start month (e.g. Jan)?', field: 'startMonth' },
     { question: 'Start year?', field: 'startYear' },
-    { question: 'Are you still working here?', field: 'isCurrent' },
+    { question: 'Are you still working here?', field: 'isCurrent', options: ['Yes', 'No'] },
     { question: 'End month (e.g. Dec)?', field: 'endMonth' },
     { question: 'End year?', field: 'endYear' },
     {
@@ -48,14 +50,14 @@ export const SECTION_PROMPTS: Record<ResumeSectionId, SectionStep[]> = {
       field: 'bullets',
       hint: 'Start with strong verbs: Led, Delivered, Built, Increased.',
     },
-    { question: 'Add another job? (yes/no)', field: 'addAnother' },
+    { question: 'Add another job? (yes/no)', field: 'addAnother', options: ['Yes', 'No'] },
   ],
   education: [
     { question: 'Institution name?', field: 'institution' },
     { question: 'Degree (e.g. B.S. Computer Science)?', field: 'degree' },
     { question: 'Start year?', field: 'startYear' },
     { question: 'End year?', field: 'endYear' },
-    { question: 'Add another degree? (yes/no)', field: 'addAnother' },
+    { question: 'Add another degree? (yes/no)', field: 'addAnother', options: ['Yes', 'No'] },
   ],
   skills: [
     {
@@ -76,7 +78,7 @@ export const SECTION_PROMPTS: Record<ResumeSectionId, SectionStep[]> = {
     { question: 'Short description and your role?', field: 'description' },
     { question: 'URL? (optional)', field: 'url' },
     { question: 'Key results or tech used? One per line. (optional)', field: 'bullets' },
-    { question: 'Add another project? (yes/no)', field: 'addAnother' },
+    { question: 'Add another project? (yes/no)', field: 'addAnother', options: ['Yes', 'No'] },
   ],
   review: [
     {
@@ -90,7 +92,7 @@ export const SECTION_PROMPTS: Record<ResumeSectionId, SectionStep[]> = {
 export function getNextStep(
   sectionId: ResumeSectionId,
   stepIndex: number
-): { question: string; field?: string; hint?: string } | null {
+): { question: string; field?: string; hint?: string; options?: string[] } | null {
   const steps = SECTION_PROMPTS[sectionId]
   if (!steps || stepIndex >= steps.length) return null
   return steps[stepIndex]

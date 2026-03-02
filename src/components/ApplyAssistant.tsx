@@ -37,6 +37,7 @@ export function ApplyAssistant() {
         content: next?.question ?? "Let's build your resume. What's your full name?",
         sectionId: 'about',
         hint: next?.hint,
+        options: next?.options,
       },
     ]
   })
@@ -185,7 +186,7 @@ export function ApplyAssistant() {
             id: createMessageId(),
             content,
             hint: nextStep?.hint,
-            options: options.length > 0 ? options : undefined,
+            options: options.length > 0 ? options : nextStep?.options,
           } as ChatMessage,
         ])
       }
@@ -211,6 +212,56 @@ export function ApplyAssistant() {
       openRouterKey,
     ]
   )
+
+  const handleSkip = useCallback(() => {
+    const state = flowState
+    if (state.sectionId === 'review') return
+
+    setMessages((prev) => [
+      ...prev,
+      { id: createMessageId(), role: 'user', content: '—', sectionId: state.sectionId },
+    ])
+
+    const nextState = advanceState(state, 'skip', {
+      experienceCount: resume.experience.length,
+      educationCount: resume.education.length,
+      projectCount: resume.projects.length,
+    })
+
+    if (nextState.sectionId === 'experience' && resume.experience.length <= nextState.subIndex) {
+      addExperience()
+    }
+    if (nextState.sectionId === 'education' && resume.education.length <= nextState.subIndex) {
+      addEducation()
+    }
+    if (nextState.sectionId === 'projects' && resume.projects.length <= nextState.subIndex) {
+      addProject()
+    }
+
+    setFlowState(nextState)
+    if (nextState.sectionId !== state.sectionId) {
+      analytics.sectionComplete(state.sectionId)
+    }
+
+    const nextStep = getNextQuestionWithHint(nextState)
+    const fallbackContent =
+      nextStep?.question ??
+      (nextState.sectionId === 'review'
+        ? "You're all set. Paste a job description to check keyword match, or export your resume."
+        : "What's next?")
+    const assistantMsg = buildAssistantMessage(fallbackContent, nextState.sectionId, {})
+    setMessages((prev) => [
+      ...prev,
+      {
+        ...assistantMsg,
+        id: createMessageId(),
+        content: fallbackContent,
+        hint: nextStep?.hint,
+        options: nextStep?.options,
+      } as ChatMessage,
+    ])
+  }, [flowState, resume.experience.length, resume.education.length, resume.projects.length, addExperience, addEducation, addProject])
+
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>
@@ -245,6 +296,8 @@ export function ApplyAssistant() {
       <ChatInput
         ref={chatInputRef}
         onSend={handleSend}
+        onSkip={handleSkip}
+        showSkip={flowState.sectionId !== 'review' && !llmLoading}
         disabled={llmLoading}
         placeholder={llmLoading ? 'Thinking…' : 'Type your answer...'}
       />

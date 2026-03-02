@@ -11,7 +11,10 @@ async function apiFetch(url: string, options: RequestInit) {
     return res
   } catch (e) {
     if (e instanceof TypeError && e.message === 'Failed to fetch') {
-      throw new Error('Cannot reach server. Run "npm run dev:full" so the API runs on port 3001.')
+      const msg = import.meta.env.DEV
+        ? 'Cannot reach server. Run "npm run dev:full" so the API runs on port 3001.'
+        : 'Cannot reach server. Please check your connection or try again later.'
+      throw new Error(msg)
     }
     throw e
   }
