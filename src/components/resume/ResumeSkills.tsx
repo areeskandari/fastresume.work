@@ -19,8 +19,6 @@ function parseSkills(s: string): string[] {
 
 export function ResumeSkills({ skills }: ResumeSkillsProps) {
   const { updateSkills } = useResume()
-  const hasAny =
-    skills.technical.length > 0 || skills.tools.length > 0 || skills.soft.length > 0
 
   return (
     <section className={styles.section}>

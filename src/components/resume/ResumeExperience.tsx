@@ -7,13 +7,6 @@ interface ResumeExperienceProps {
   entries: ExperienceEntry[]
 }
 
-function formatDateRange(e: ExperienceEntry): string {
-  const start = [e.startMonth, e.startYear].filter(Boolean).join(' ')
-  const end = e.isCurrent ? 'Present' : [e.endMonth, e.endYear].filter(Boolean).join(' ')
-  if (!start && !end) return ''
-  return `${start} – ${end}`
-}
-
 export function ResumeExperience({ entries }: ResumeExperienceProps) {
   const { updateExperience } = useResume()
 
