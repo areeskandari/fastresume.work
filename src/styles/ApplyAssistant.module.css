@@ -12,6 +12,18 @@
   background: var(--col-surface);
 }
 
+.headerTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.headerTop > div {
+  min-width: 0;
+}
+
 .title {
   margin: 0;
   font-size: 1.5rem;
@@ -20,9 +32,13 @@
 }
 
 .subtitle {
-  margin: 0.25rem 0 1rem;
+  margin: 0.25rem 0 0;
   font-size: 0.875rem;
   color: var(--col-text-muted);
+}
+
+.header .importButton {
+  flex-shrink: 0;
 }
 
 .messagesWrap {
@@ -34,6 +50,9 @@
 .reviewActions {
   flex-shrink: 0;
   padding: 0 1.5rem 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .jdButton {
@@ -47,4 +66,116 @@
 
 .jdButton:hover {
   background: var(--col-chat-assistant-bg);
+}
+
+.importButton {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--col-text);
+  background: #ffffff;
+  border: 1px solid var(--col-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.importButton:hover {
+  background: var(--col-bg);
+}
+
+.importModalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+}
+
+.importModal {
+  width: 100%;
+  max-width: 520px;
+  background: var(--col-surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--col-border);
+  box-shadow: var(--shadow-md);
+  padding: 1.25rem 1.5rem;
+}
+
+.importModalTitle {
+  margin: 0 0 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.importModalBody {
+  font-size: 0.875rem;
+  color: var(--col-text);
+}
+
+.importModalBody p {
+  margin: 0 0 0.75rem;
+}
+
+.importFileInput {
+  margin: 0.5rem 0 0.75rem;
+}
+
+.importProgress {
+  font-size: 0.8125rem;
+  color: var(--col-text-muted);
+  margin-top: 0.5rem;
+}
+
+.importError {
+  font-size: 0.8125rem;
+  color: var(--col-accent);
+  margin-top: 0.5rem;
+}
+
+.importRawPreview {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  min-height: 120px;
+  border-radius: var(--radius);
+  border: 1px solid var(--col-border);
+  background: #fafafa;
+  white-space: pre-wrap;
+  overflow-y: auto;
+}
+
+.importModalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.importPrimaryBtn {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.875rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--col-accent);
+  background: var(--col-accent);
+  color: #fff;
+}
+
+.importPrimaryBtn:hover {
+  background: var(--col-accent-hover);
+  border-color: var(--col-accent-hover);
+}
+
+.importSecondaryBtn {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.875rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--col-border);
+  background: var(--col-surface);
+  color: var(--col-text);
+}
+
+.importSecondaryBtn:hover {
+  background: var(--col-bg);
 }

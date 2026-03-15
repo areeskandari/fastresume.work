@@ -94,9 +94,6 @@ export function ExportBar({
     }
   }
 
-  const apiBase = import.meta.env.VITE_API_URL ?? ''
-  const showEnhance = !!apiBase || import.meta.env.DEV
-
   const handleOpenCover = async () => {
     setCoverError(null)
     setCoverLetter(null)
@@ -137,26 +134,22 @@ export function ExportBar({
 
   return (
     <div className={styles.wrapper}>
-      {showEnhance && (
-        <button
-          type="button"
-          className={styles.enhanceBtn}
-          onClick={handleAtsEnhance}
-          disabled={enhanceLoading}
-        >
-          {enhanceLoading ? '…' : enhanceSessionId ? 'ATS Enhance (apply)' : 'ATS Enhance — $0.99'}
-        </button>
-      )}
-      {showEnhance && (
-        <button
-          type="button"
-          className={styles.coverLetterBtn}
-          onClick={handleOpenCover}
-          disabled={coverLoading}
-        >
-          {coverLoading ? '…' : 'Write cover letter — $0.50'}
-        </button>
-      )}
+      <button
+        type="button"
+        className={styles.enhanceBtn}
+        onClick={handleAtsEnhance}
+        disabled={enhanceLoading}
+      >
+        {enhanceLoading ? '…' : enhanceSessionId ? 'ATS Enhance (apply)' : 'ATS Enhance — $0.99'}
+      </button>
+      <button
+        type="button"
+        className={styles.coverLetterBtn}
+        onClick={handleOpenCover}
+        disabled={coverLoading}
+      >
+        {coverLoading ? '…' : 'Write cover letter — $0.50'}
+      </button>
       {(enhanceError || coverError) && (
         <span className={styles.enhanceError}>{enhanceError || coverError}</span>
       )}

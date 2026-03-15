@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import Stripe from 'stripe'
+import pdf from 'pdf-parse'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 dotenv.config({ path: path.join(__dirname, '.env') })
@@ -28,7 +29,7 @@ if (!stripeSecret) {
 const stripe = stripeSecret ? new Stripe(stripeSecret, { apiVersion: '2024-11-20.acacia' }) : null
 
 app.use(cors({ origin: true }))
-app.use(express.json())
+app.use(express.json({ limit: '5mb' }))
 
 const baseUrl = process.env.BASE_URL || 'http://localhost:5173'
 
@@ -227,6 +228,143 @@ app.post('/api/cover-letter', async (req, res) => {
     console.error(e)
     res.status(500).json({ error: e.message })
   }
+})
+
+// ——— Import resume (PDF → raw text only) ———
+app.post('/api/import-resume-text', async (req, res) => {
+  try {
+    const { data } = req.body || {}
+    if (!data || typeof data !== 'string') {
+      return res.status(400).json({ error: 'data (base64) required' })
+    }
+    const buffer = Buffer.from(data, 'base64')
+    const result = await pdf(buffer)
+    const text = (result.text || '').trim()
+    if (!text) {
+      return res.status(422).json({ error: 'Could not extract text from PDF' })
+    }
+    res.json({ text })
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({ error: 'Failed to read PDF' })
+  }
+})
+
+// ——— Blog (simple CMS) ———
+const dataDir = path.join(__dirname, 'data')
+const postsPath = path.join(dataDir, 'posts.json')
+
+function ensureDataDir() {
+  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true })
+  if (!fs.existsSync(postsPath)) fs.writeFileSync(postsPath, '[]', 'utf8')
+}
+
+function readPosts() {
+  ensureDataDir()
+  const raw = fs.readFileSync(postsPath, 'utf8')
+  try {
+    return JSON.parse(raw)
+  } catch {
+    return []
+  }
+}
+
+function writePosts(posts) {
+  ensureDataDir()
+  fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2), 'utf8')
+}
+
+const cmsSecret = process.env.CMS_SECRET || ''
+
+function requireCmsAuth(req, res, next) {
+  if (!cmsSecret) {
+    return res.status(503).json({ error: 'CMS not configured (set CMS_SECRET)' })
+  }
+  const auth = req.headers.authorization || req.headers['x-cms-secret'] || ''
+  const token = auth.replace(/^Bearer\s+/i, '').trim() || (typeof auth === 'string' ? auth : '')
+  if (token !== cmsSecret) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
+  next()
+}
+
+app.get('/api/blog/posts', (_req, res) => {
+  const posts = readPosts()
+  const list = posts
+    .map(({ id, slug, title, description, createdAt, updatedAt }) => ({
+      id,
+      slug,
+      title,
+      description,
+      createdAt,
+      updatedAt,
+    }))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  res.json(list)
+})
+
+app.get('/api/blog/posts/:slug', (req, res) => {
+  const posts = readPosts()
+  const post = posts.find((p) => p.slug === req.params.slug)
+  if (!post) return res.status(404).json({ error: 'Not found' })
+  res.json(post)
+})
+
+app.post('/api/blog/posts', requireCmsAuth, express.json(), (req, res) => {
+  const { slug, title, description, body } = req.body || {}
+  if (!slug || !title) {
+    return res.status(400).json({ error: 'slug and title required' })
+  }
+  const posts = readPosts()
+  if (posts.some((p) => p.slug === slug)) {
+    return res.status(409).json({ error: 'Slug already exists' })
+  }
+  const now = new Date().toISOString()
+  const id = `post-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+  const post = {
+    id,
+    slug: slug.trim(),
+    title: (title || '').trim(),
+    description: (description || '').trim(),
+    body: (body || '').trim(),
+    createdAt: now,
+    updatedAt: now,
+  }
+  posts.push(post)
+  writePosts(posts)
+  res.status(201).json(post)
+})
+
+app.put('/api/blog/posts/:id', requireCmsAuth, express.json(), (req, res) => {
+  const posts = readPosts()
+  const idx = posts.findIndex((p) => p.id === req.params.id)
+  if (idx === -1) return res.status(404).json({ error: 'Not found' })
+  const { slug, title, description, body } = req.body || {}
+  const current = posts[idx]
+  const newSlug = slug !== undefined ? slug.trim() : current.slug
+  if (newSlug && posts.some((p, i) => i !== idx && p.slug === newSlug)) {
+    return res.status(409).json({ error: 'Slug already exists' })
+  }
+  const now = new Date().toISOString()
+  posts[idx] = {
+    ...current,
+    slug: newSlug || current.slug,
+    title: title !== undefined ? title.trim() : current.title,
+    description: description !== undefined ? description.trim() : current.description,
+    body: body !== undefined ? body.trim() : current.body,
+    updatedAt: now,
+  }
+  writePosts(posts)
+  res.json(posts[idx])
+})
+
+app.delete('/api/blog/posts/:id', requireCmsAuth, (req, res) => {
+  const posts = readPosts()
+  const idx = posts.findIndex((p) => p.id === req.params.id)
+  if (idx === -1) return res.status(404).json({ error: 'Not found' })
+  posts.splice(idx, 1)
+  writePosts(posts)
+  res.status(204).send()
 })
 
 app.listen(port, () => {

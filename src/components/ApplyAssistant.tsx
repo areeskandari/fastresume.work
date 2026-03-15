@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useResume } from '../context/ResumeContext'
 import {
   getInitialOrchestratorState,
@@ -19,6 +20,7 @@ import { JDMatchingPanel } from './chat/JDMatchingPanel'
 import { getAssistantReply } from '../services/openrouter'
 import { parseAssistantContent } from '../utils/parseAssistantContent'
 import { analytics } from '../analytics'
+import { estimateResumeFromText } from '../utils/importPdf'
 import styles from '../styles/ApplyAssistant.module.css'
 
 function createMessageId() {
@@ -26,7 +28,18 @@ function createMessageId() {
 }
 
 export function ApplyAssistant() {
-  const { resume, updateAbout, addExperience, updateExperience, addEducation, updateEducation, updateSkills, addProject, updateProject } = useResume()
+  const {
+    resume,
+    updateAbout,
+    addExperience,
+    updateExperience,
+    addEducation,
+    updateEducation,
+    updateSkills,
+    addProject,
+    updateProject,
+    setResume,
+  } = useResume()
   const [flowState, setFlowState] = useState<OrchestratorState>(getInitialOrchestratorState())
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     const next = getNextQuestionWithHint(getInitialOrchestratorState())
@@ -43,9 +56,15 @@ export function ApplyAssistant() {
   })
   const [jdPanelOpen, setJdPanelOpen] = useState(false)
   const [llmLoading, setLlmLoading] = useState(false)
+  const [importOpen, setImportOpen] = useState(false)
+  const [importStatus, setImportStatus] = useState<'idle' | 'reading' | 'uploading' | 'mapping' | 'done'>('idle')
+  const [importError, setImportError] = useState<string | null>(null)
+  const [importRaw, setImportRaw] = useState<string>('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const chatInputRef = useRef<HTMLTextAreaElement | null>(null)
+  const importFileRef = useRef<HTMLInputElement | null>(null)
   const openRouterKey = import.meta.env.VITE_OPENROUTER_API_KEY
+  const apiBase = import.meta.env.VITE_API_URL ?? ''
 
   useEffect(() => {
     if (!llmLoading) chatInputRef.current?.focus()
@@ -262,11 +281,87 @@ export function ApplyAssistant() {
     ])
   }, [flowState, resume.experience.length, resume.education.length, resume.projects.length, addExperience, addEducation, addProject])
 
+  const handleOpenImport = () => {
+    setImportOpen(true)
+    setImportStatus('idle')
+    setImportError(null)
+    setImportRaw('')
+  }
+
+  const handleCloseImport = () => {
+    setImportOpen(false)
+    setImportStatus('idle')
+    setImportError(null)
+  }
+
+  const handleImportSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setImportError(null)
+    const fileInput = importFileRef.current
+    const file = fileInput?.files?.[0]
+    if (!file) {
+      setImportError('Please choose a PDF resume first.')
+      return
+    }
+    if (!/\.pdf$/i.test(file.name)) {
+      setImportError('Please upload a PDF file.')
+      return
+    }
+    try {
+      setImportStatus('reading')
+      const arrayBuffer = await file.arrayBuffer()
+      const bytes = new Uint8Array(arrayBuffer)
+      let binary = ''
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i])
+      }
+      const base64 = btoa(binary)
+
+      setImportStatus('uploading')
+      const res = await fetch(`${apiBase}/api/import-resume-text`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: base64 }),
+      })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(err.error || 'Import failed')
+      }
+      const { text } = (await res.json()) as { text: string }
+      setImportRaw(text)
+
+      setImportStatus('mapping')
+      const mapped = estimateResumeFromText(text)
+      setResume(mapped)
+      setImportStatus('done')
+    } catch (err) {
+      setImportStatus('idle')
+      setImportError(err instanceof Error ? err.message : 'Import failed')
+    }
+  }
+
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Fast Resume</h1>
-        <p className={styles.subtitle}>☕️ Resume done before your coffee cools.</p>
+        <div className={styles.headerTop}>
+          <div>
+            <h1 className={styles.title}>
+              <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>Fast Resume</Link>
+            </h1>
+            <p className={styles.subtitle}>
+              ☕️ Resume done before your coffee cools.
+              <Link to="/blog" style={{ marginLeft: '0.75rem', fontSize: '0.875rem' }}>Blog</Link>
+              <Link to="/about" style={{ marginLeft: '0.75rem', fontSize: '0.875rem' }}>About</Link>
+            </p>
+          </div>
+          <button
+            type="button"
+            className={styles.importButton}
+            onClick={handleOpenImport}
+          >
+            Import resume (PDF)
+          </button>
+        </div>
         <ProgressIndicator
           sections={RESUME_SECTION_ORDER}
           currentSection={flowState.sectionId}
@@ -301,6 +396,67 @@ export function ApplyAssistant() {
         disabled={llmLoading}
         placeholder={llmLoading ? 'Thinking…' : 'Type your answer...'}
       />
+      {importOpen && (
+        <div className={styles.importModalBackdrop}>
+          <div className={styles.importModal}>
+            <h3 className={styles.importModalTitle}>Import your existing resume (PDF)</h3>
+            <form onSubmit={handleImportSubmit}>
+              <div className={styles.importModalBody}>
+                <p>
+                  We&apos;ll read your PDF, extract the text, and do a best-effort fill of your resume
+                  inside Fast Resume. You can edit everything afterwards.
+                </p>
+                <input
+                  ref={importFileRef}
+                  className={styles.importFileInput}
+                  type="file"
+                  accept="application/pdf"
+                />
+                {importStatus !== 'idle' && (
+                  <p className={styles.importProgress}>
+                    {importStatus === 'reading' && 'Reading file…'}
+                    {importStatus === 'uploading' && 'Sending to server and extracting text…'}
+                    {importStatus === 'mapping' && 'Mapping into resume structure…'}
+                    {importStatus === 'done' && 'Imported! Your resume has been filled. Review and tweak any fields.'}
+                  </p>
+                )}
+                {importError && <p className={styles.importError}>{importError}</p>}
+                {importRaw && (
+                  <div className={styles.importRawPreview}>
+                    {importRaw.slice(0, 2000)}
+                    {importRaw.length > 2000 ? '…' : ''}
+                  </div>
+                )}
+              </div>
+              <div className={styles.importModalFooter}>
+                <button
+                  type="button"
+                  className={styles.importSecondaryBtn}
+                  onClick={handleCloseImport}
+                  disabled={
+                    importStatus === 'reading' ||
+                    importStatus === 'uploading' ||
+                    importStatus === 'mapping'
+                  }
+                >
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  className={styles.importPrimaryBtn}
+                  disabled={
+                    importStatus === 'reading' ||
+                    importStatus === 'uploading' ||
+                    importStatus === 'mapping'
+                  }
+                >
+                  {importStatus === 'done' ? 'Re-import' : 'Import PDF'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

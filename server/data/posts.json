@@ -1,0 +1,56 @@
+[
+  {
+    "id": "post-ats-keywords-1",
+    "slug": "ats-keywords-that-get-past-filters",
+    "title": "ATS Keywords That Actually Get Past Filters",
+    "description": "How applicant tracking systems read your resume and the exact keywords you should focus on.",
+    "body": "Most rejections happen before a human ever sees your resume. Applicant tracking systems (ATS) scan your document and try to match it against the job description.\n\nHere is how to think about keywords the right way:\n\n1. Start from the job description\n   Copy the job description into a notes doc. Highlight hard skills (tools, technologies, frameworks) and role-specific phrases (\"pipeline\", \"stakeholder\", \"quota\"). These are your primary keyword set.\n\n2. Use exact words, not just synonyms\n   ATS is getting smarter, but it still relies heavily on exact phrase matches. If the posting says \"account executive\", write \"Account Executive\" instead of only \"sales rep\".\n\n3. Place keywords where ATS looks first\n   - Title at the top: mirror the job title where reasonable.\n   - Skills section: use a clean, comma-separated list (e.g. \"Python, SQL, Snowflake, dbt\").\n   - Work experience bullets: show the skill in context of an achievement, not as a naked list.\n\n4. Don’t keyword stuff\n   Repeating the same tool ten times does not increase your chances; it only makes the resume harder for a human to skim. Aim for 1–3 mentions of key tools across your most recent roles.\n\n5. Test with plain-text\n   Paste your resume into a plain-text editor. If section headings, bullet points, and skills are still clear, ATS will probably parse it correctly.\n\nIf you do nothing else, make sure your top 10 skills from the job description appear in your skills section and in at least one strong bullet. That alone dramatically increases the chance of getting past filters.",
+    "createdAt": "2026-03-03T10:00:00.000Z",
+    "updatedAt": "2026-03-03T10:00:00.000Z"
+  },
+  {
+    "id": "post-resume-structure-2",
+    "slug": "resume-structure-that-recruiters-skim",
+    "title": "A Resume Structure Recruiters Can Skim in 7 Seconds",
+    "description": "A simple layout that works with ATS and helps humans find your best points fast.",
+    "body": "Most hiring managers give your resume 7–10 seconds on the first pass. The goal of your structure is not to be clever; it is to make it painfully easy to see why you are a fit.\n\nUse this simple structure:\n\n1. Header\n   - Name in a slightly larger font.\n   - City, email, phone, LinkedIn, portfolio.\n   - No headshot, no full address.\n\n2. 2–3 line summary\n   Focus on role + years of experience + 2–3 proof points.\n   Example: \"Data analyst with 4+ years building dashboards in Looker and Power BI, improving reporting speed by 40% and supporting decisions across sales and marketing.\"\n\n3. Skills section\n   Group by category: \"Languages\", \"Tools\", \"Platforms\". Keep it clean and ATS-friendly (no graphics or bars).\n\n4. Experience\n   - Reverse chronological.\n   - For each role: title, company, location, dates.\n   - 3–6 bullets max per role.\n   - Each bullet: one clear achievement with numbers where possible.\n\n5. Education & extras\n   - Degrees, bootcamps, relevant certifications.\n   - Only include side projects, hackathons, or volunteering if they support the role you want.\n\nIf your resume already has all of these sections, your next win is editing. Remove weak bullets that just describe responsibilities, and replace them with outcome-focused bullets that show how you made things better.",
+    "createdAt": "2026-03-03T10:05:00.000Z",
+    "updatedAt": "2026-03-03T10:05:00.000Z"
+  },
+  {
+    "id": "post-quantify-achievements-3",
+    "slug": "how-to-quantify-resume-achievements",
+    "title": "How to Turn Vague Tasks Into Strong, Quantified Resume Bullets",
+    "description": "A small framework to move from responsibilities to measurable impact in your resume.",
+    "body": "Most candidates write bullets like \"Responsible for managing social media\". That tells a hiring manager nothing about whether you did it well.\n\nUse this quick framework to upgrade bullets:\n\n1. Start with an action verb\n   Examples: \"Increased\", \"Reduced\", \"Launched\", \"Automated\", \"Improved\". Avoid weak verbs like \"Helped\" or \"Worked on\".\n\n2. Add a concrete result\n   What changed because you did the work? More revenue, less cost, faster process, happier customers?\n\n3. Attach a number or clear scope\n   - Percentage (\"+32% click-through rate\").\n   - Count (\"handled 40+ inbound tickets per day\").\n   - Time (\"cut onboarding from 10 days to 3\").\n\n4. Add context\n   Mention tool, channel, or team if it matters: \"using HubSpot\", \"across 3 markets\", \"for a 10-person engineering team\".\n\nExample transformation:\n- Weak: \"Managed email campaigns\".\n- Strong: \"Increased email campaign open rates from 18% to 27% in 6 months by A/B testing subject lines and send times in Mailchimp\".\n\nIf you cannot find an exact number, use reasonable ranges or relative improvements (\"about 20% faster\", \"roughly 200 customers per month\"). It is better to be approximately right than completely vague.",
+    "createdAt": "2026-03-03T10:10:00.000Z",
+    "updatedAt": "2026-03-03T10:10:00.000Z"
+  },
+  {
+    "id": "post-common-ats-mistakes-4",
+    "slug": "common-ats-mistakes-that-break-your-resume",
+    "title": "Common ATS Mistakes That Quietly Break Your Resume",
+    "description": "Design choices and file issues that make otherwise good resumes invisible to ATS.",
+    "body": "Many strong candidates get rejected because the ATS simply cannot read their resume correctly. The content is fine, but the formatting breaks parsing.\n\nAvoid these common traps:\n\n1. Over-designed templates\n   Two-column layouts with text inside graphics, icons for contact info, or heavy use of text boxes can confuse parsers. Use a clean, mostly single-column structure.\n\n2. Saving as an image or unusual format\n   Always submit as PDF or DOCX unless the employer asks for something else. Do not export your resume as a PNG/JPG.\n\n3. Missing standard headings\n   ATS systems often look for headings like \"Experience\", \"Work Experience\", \"Education\", \"Skills\". Avoid renaming sections to creative labels only you understand.\n\n4. Using tables for everything\n   Simple tables can work, but complex nested tables or merged cells often break parsing. If you use a table, keep it simple and test the plain-text version.\n\n5. Hiding keywords in white text\n   This used to be a hack some people recommended. Modern ATS can detect it, and hiring teams treat it as dishonest.\n\nQuick test: paste your resume into a plain-text editor. If the order of sections, job titles, and bullets is still clear, your formatting is probably safe for ATS.",
+    "createdAt": "2026-03-03T10:15:00.000Z",
+    "updatedAt": "2026-03-03T10:15:00.000Z"
+  },
+  {
+    "id": "post-tailor-resume-5",
+    "slug": "how-to-tailor-your-resume-in-10-minutes",
+    "title": "How to Tailor Your Resume for a Role in 10 Minutes",
+    "description": "A quick, repeatable process to align your resume with a specific job without rewriting everything.",
+    "body": "You do not need a brand-new resume for every single application. You do need light tailoring so the hiring manager instantly sees the match.\n\nUse this 10-minute tailoring checklist:\n\n1. Match the job title\n   If your background supports it, mirror the job title in your summary (\"Product Manager\" vs. \"Product Specialist\"). Do not lie, but use the closest accurate title.\n\n2. Reorder your skills\n   Move the 5–7 most relevant skills for this job to the front of your skills list. This small change can make a big difference for both ATS and humans.\n\n3. Swap 1–2 bullets per recent role\n   For your last 1–2 roles, edit or replace 1–2 bullets each so they speak directly to the responsibilities in the posting.\n\n4. Mirror important language\n   If the job description mentions \"cross-functional\", \"stakeholders\", or specific tools, use those exact words where they honestly apply to your work.\n\n5. Remove distracting content\n   If a project or job from long ago pulls the story in a different direction, trim it down. Your resume should tell a focused story about why you are right for this role right now.\n\nIf you apply this process before each application, you get most of the benefit of a fully custom resume with a fraction of the effort.",
+    "createdAt": "2026-03-03T10:20:00.000Z",
+    "updatedAt": "2026-03-03T10:20:00.000Z"
+  },
+  {
+    "id": "post-hiring-manager-insight-6",
+    "slug": "what-hiring-managers-actually-scan-for",
+    "title": "What Hiring Managers Actually Scan For in Your Resume",
+    "description": "A behind-the-scenes look at how hiring managers review resumes and what makes them stop scrolling.",
+    "body": "From a hiring manager’s perspective, a resume review is a filtering exercise. They are not trying to prove you are bad; they are trying to quickly find 5–10 people worth a deeper look.\n\nIn the first scan, they look for:\n\n1. Role and level fit\n   Does your recent title and scope match the role? A senior role expects ownership, leadership, or broader impact, not just execution.\n\n2. Relevant domain or tech stack\n   Have you worked with similar tools, markets, or problem types? You do not need a perfect match, but there should be a believable bridge.\n\n3. Evidence of outcomes\n   Bullets with numbers or clear business results stand out. \"Improved\", \"reduced\", and \"increased\" are strong signals when backed by specifics.\n\n4. Red flags\n   Extremely short stints with no explanation, large unexplained gaps, or very generic bullets across many roles can slow you down.\n\nYour goal is to make it easy for them to say \"yes\" to a phone screen:\n   - Make your recent 2–3 roles very clear.\n   - Put your best 4–6 achievements where the eye lands first.\n   - Use clean formatting so nothing gets in the way of the story.\n\nIf a hiring manager can explain in one sentence why you are a strong candidate after a 10-second skim, your resume is doing its job.",
+    "createdAt": "2026-03-03T10:25:00.000Z",
+    "updatedAt": "2026-03-03T10:25:00.000Z"
+  }
+]
